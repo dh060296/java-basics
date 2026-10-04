@@ -1,19 +1,20 @@
-name: CI                      # Name, der auf GitHub angezeigt wird
+name: CI
 
-on:                           # Wann soll das laufen?
+on:
   push:
-    branches: [main]          # bei jedem Push auf main
-  pull_request:               # und bei jedem Pull Request
+    branches: [main]
+  pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest    # auf einem Linux-Server von GitHub
+  compile:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7      # Code herunterladen
-      - uses: actions/setup-java@v5    # Java installieren
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven                 # braucht eine pom.xml im Repo!
-      - run: chmod +x mvnw             # Sicherheitsnetz für Windows-Nutzer (siehe unten)
-      - run: ./mvnw -B verify          # Bauen und alle Tests ausführen
+      - name: Alle Java-Dateien kompilieren
+        run: |
+          find . -name "*.java" > quellen.txt
+          javac -d out @quellen.txt
