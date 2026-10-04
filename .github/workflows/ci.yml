@@ -1,0 +1,18 @@
+name: CI                      # Name, der auf GitHub angezeigt wird
+
+on:                           # Wann soll das laufen?
+  push:
+    branches: [main]          # bei jedem Push auf main
+  pull_request:               # und bei jedem Pull Request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest    # auf einem Linux-Server von GitHub
+    steps:
+      - uses: actions/checkout@v4      # Code herunterladen
+      - uses: actions/setup-java@v4    # Java installieren
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven                 # Bibliotheken zwischenspeichern
+      - run: ./mvnw -B verify          # Bauen und alle Tests ausführen
